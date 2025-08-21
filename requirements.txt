@@ -1,8 +1,21 @@
-tensorflow>=2.12
-numpy
-pandas
-matplotlib
-seaborn
-scikit-learn
-streamlit
-Pillow
+ultralytics>=8.0.0
+opencv-python>=4.8
+numpy>=1.23
+streamlit>=1.25
+Pillow>=9.0
+pyttsx3>=2.90
+
+
+
+
+#ultralytics → YOLOv8
+
+#opencv-python → video/image processing
+
+#numpy → arrays & math
+
+#streamlit → if you want a web interface
+
+#Pillow → image handling
+
+#pyttsx3 → voice alerts
