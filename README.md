@@ -1,88 +1,89 @@
-# VisionGuard – CCTV Object Classification (Academic Baseline + Practical Hooks)
+📹 VisionGuard – CCTV Object Detection System
 
-This project implements the **problem description** end-to-end using TensorFlow/Keras:
+An AI-powered object detection system designed for CCTV surveillance.
+The project uses YOLOv8 for real-time detection of people, vehicles, and other objects from video streams or images.
 
-- Train a CNN with ~**60,000 samples** (Fashion-MNIST baseline) **or** CIFAR-10 (matches the specified classes).
-- Evaluate on the full test set, visualize metrics, and generate a report.
-- Provide a small **Streamlit dashboard** for quick demos.
-- Modular code: `data.py`, `model.py`, `train.py`, `evaluate.py`, `infer.py`.
+🚀 Features
 
-> **Note on dataset mismatch**: The prompt mixes two benchmarks.
-> - Fashion-MNIST → 60,000 train samples, 28x28 grayscale (but clothing classes).  
-> - CIFAR-10 → 50,000 train samples, 32x32 RGB (classes: airplane, automobile, bird, cat, deer, dog, frog, horse, ship, truck).
->
-> To satisfy both, this repo supports **both datasets**. Set `dataset:` in `config.yaml` to `cifar10` (recommended for class list) or `fashion_mnist` (recommended for 60k-sample requirement).
+🎯 Real-time object detection using YOLOv8
 
-## Project Structure
-```
-visionguard_cctv_classifier/
-├── config.yaml
-├── requirements.txt
-├── train.py
-├── evaluate.py
-├── infer.py
-├── streamlit_app.py
-├── models/
-├── outputs/
-├── logs/
-└── src/
-    ├── data.py
-    ├── model.py
-    └── utils.py
-```
+🖥️ Supports CCTV/Live Camera feeds and pre-recorded video files
 
-## Quickstart
-1. **Create environment & install deps**
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # Windows: .venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
+📊 Detection statistics (counts of persons, vehicles, etc.)
 
-2. **Choose dataset** in `config.yaml`:
-   - `dataset: cifar10` (matches problem's class list)
-   - `dataset: fashion_mnist` (28x28 grayscale, 60k train)
+💾 Option to save detections with bounding boxes
 
-3. **Train**
-   ```bash
-   python train.py
-   ```
-   - Downloads the dataset automatically via Keras.
-   - Saves best model to `models/best_model.keras`.
-   - Training curves in `outputs/accuracy.png` and `outputs/loss.png`.
-   - Test metrics in `outputs/test_metrics.txt`.
+⚡ Lightweight Flask API for integration with frontend (React)
 
-4. **Evaluate**
-   ```bash
-   python evaluate.py
-   ```
-   - Produces `outputs/confusion_matrix.png`, `outputs/confusion_matrix_norm.png`.
-   - Writes `outputs/classification_report.txt` (precision/recall/F1 per class).
+🛠️ Tech Stack
 
-5. **Infer on a single image**
-   ```bash
-   python infer.py path/to/image.jpg
-   ```
+Deep Learning: YOLOv8, PyTorch
 
-6. **Streamlit demo (optional)**
-   ```bash
-   streamlit run streamlit_app.py
-   ```
+Backend: Flask (Python)
 
-## How this meets the assignment
-- **Model training** on a standard benchmark (Fashion-MNIST or CIFAR-10).
-- **All test images** used for evaluation (no hold-out needed beyond validation split).
-- **Hyperparameter tuning** hooks via `config.yaml` (epochs, batch size, learning rate, augmentations, callbacks).
-- **Visualizations** (loss/accuracy curves, confusion matrix).
-- **Report** generated as `classification_report.txt` with full metrics.
+Frontend: React.js (optional live dashboard)
 
-## Extend to CCTV automation
-Once the classifier is validated:
-- Use it to **gate recording**: only trigger when predicted class ∈ {person, car, …}. For detection on video streams, consider **YOLOv8** and use its detections to start/stop recording (you already built this!).
-- Or, run classification on motion-triggered frames.
+Other Tools: OpenCV, NumPy
 
-## Tips
-- Increase `epochs` to 40+ for stronger performance.
-- Use `ReduceLROnPlateau` and try a slightly lower learning rate after several epochs.
-- Try **data augmentation** if you see overfitting.
-- For CIFAR-10, consider upgrading the backbone (e.g., small ResNet) later.
+📂 Project Structure
+VisionGuard/
+│── backend/
+│   ├── app.py            # Flask API
+│   ├── detect.py         # Detection logic with YOLOv8
+│   └── requirements.txt  # Python dependencies
+│
+│── frontend/
+│   ├── src/              # React frontend code
+│   └── package.json
+│
+│── models/
+│   └── yolov8n.pt        # Pre-trained YOLOv8 model
+│
+└── README.md
+
+⚙️ Installation & Setup
+1️⃣ Clone Repository
+git clone https://github.com/YourUsername/VisionGuard.git
+cd VisionGuard
+
+2️⃣ Backend Setup
+cd backend
+pip install -r requirements.txt
+
+
+Run Flask server:
+
+python app.py
+
+3️⃣ Frontend Setup (Optional)
+cd frontend
+npm install
+npm start
+
+🎯 Usage
+Run on video file:
+python detect.py --source data/test_video.mp4
+
+Run on CCTV camera (replace with your IP):
+python detect.py --source rtsp://username:password@ip_address:port/stream
+
+Run via Flask API:
+POST /predict  
+Body: { "image": "base64_encoded_image" }
+
+📊 Sample Output
+
+✅ Detected persons, cars, and bikes with bounding boxes.
+✅ Can count and log number of detections.
+
+📈 Future Improvements
+
+🚀 Integrate with attendance system (face recognition)
+
+📡 Push alerts (email/SMS) when intruder detected
+
+🖥️ Web dashboard with live detection analytics
+
+🤝 Contributing
+
+Pull requests are welcome. For major changes, open an issue first.
